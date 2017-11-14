@@ -48,6 +48,7 @@ bintray {
     pkg {
         repo = 'impstack'
         name = 'impstack-utils'
+        released  = new Date()
         licenses = ['MIT']
         vcsUrl = 'https://github.com/ImpStack/impstack-utils'
         labels = ['java', 'jme']
