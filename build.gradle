@@ -43,6 +43,8 @@ bintray {
     user = project.property('bintrayUser')
     key = project.property('bintrayApiKey')
     publications = ['MyPublication']
+    publish = true
+    override = true
     pkg {
         repo = 'impstack'
         name = 'impstack-utils'
