@@ -1,0 +1,51 @@
+package org.impstack.awt;
+
+/**
+ * @author remy
+ * @since 13/03/17
+ */
+public class WindowSize {
+
+    private final int width;
+    private final int height;
+
+    public WindowSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WindowSize that = (WindowSize) o;
+
+        if (width != that.width) return false;
+        return height == that.height;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = width;
+        result = 31 * result + height;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WindowSize{" +
+                "width=" + width +
+                ", height=" + height +
+                '}';
+    }
+
+}

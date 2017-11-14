@@ -1,0 +1,62 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+group = 'org.impstack'
+version = '0.1'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.slf4j:slf4j-api:1.7.+"
+    compile "org.slf4j:jul-to-slf4j:1.7.+"
+    compile "org.jmonkeyengine:jme3-core:3.1.+"
+    compile("com.simsilica:lemur:+") {
+        exclude group: "com.google.guava", module: "guava"
+    }
+    compile("com.simsilica:zay-es:+") {
+        exclude group: "com.google.guava", module: "guava"
+    }
+    compile "org.apache.commons:commons-text:1.1"
+    testCompile "junit:junit:4.+"
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'org.impstack'
+            artifactId 'impstack-utils'
+            version '0.1'
+        }
+    }
+}
+
+bintray {
+    user = project.property('bintrayUser')
+    key = project.property('bintrayApiKey')
+    publications = ['MyPublication']
+    pkg {
+        repo = 'impstack'
+        name = 'impstack-utils'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/ImpStack/impstack-utils'
+        labels = ['java', 'jme']
+        publicDownloadNumbers = true
+        version {
+            name = '0.1'
+            desc = 'Utility library'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+}
