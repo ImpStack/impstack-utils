@@ -39,14 +39,18 @@ public class DebugUtils {
         node.attachChild(coordinateAxes);
     }
 
-    public Geometry createDebugGeometry(String name, Mesh mesh, ColorRGBA color) {
+    public Geometry createGeometry(String name, Mesh mesh, ColorRGBA color, boolean wireframe) {
         Geometry geometry = new Geometry(name, mesh);
         Material material = new Material(application.getAssetManager(), DEBUG_MATERIAL);
-        material.getAdditionalRenderState().setWireframe(true);
+        material.getAdditionalRenderState().setWireframe(wireframe);
         material.setColor(DEBUG_MATERIAL_COLOR, color);
         material.getAdditionalRenderState().setLineWidth(1);
         geometry.setMaterial(material);
         return geometry;
+    }
+
+    public Geometry createDebugGeometry(String name, Mesh mesh, ColorRGBA color) {
+        return createGeometry(name, mesh, color, true);
     }
 
     public Geometry createBoundingBox(Spatial spatial, ColorRGBA color) {
