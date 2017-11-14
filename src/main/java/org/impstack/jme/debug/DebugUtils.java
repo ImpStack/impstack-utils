@@ -3,8 +3,10 @@ package org.impstack.jme.debug;
 import com.jme3.app.Application;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
@@ -45,6 +47,10 @@ public class DebugUtils {
         material.getAdditionalRenderState().setWireframe(wireframe);
         material.setColor(DEBUG_MATERIAL_COLOR, color);
         material.getAdditionalRenderState().setLineWidth(1);
+        if (color.getAlpha() != 1) {
+            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+            geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
+        }
         geometry.setMaterial(material);
         return geometry;
     }
