@@ -33,8 +33,8 @@ public class StringUtils {
     }
 
     /**
-     * Returns the given string, with a maximum of {@param max} characters.
-     * Characters after the {@param max} will be stripped
+     * Returns the given string, with a maximum of {@code max} characters.
+     * Characters after the {@code max} will be stripped
      * @param string
      * @param max
      * @return
