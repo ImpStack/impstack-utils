@@ -46,4 +46,10 @@ public class ArrayStack<E> implements Stack<E> {
     public void clear() {
         list.clear();
     }
+
+    @Override
+    public boolean remove(E e) {
+        return list.remove(e);
+    }
+
 }

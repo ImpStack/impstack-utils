@@ -43,4 +43,12 @@ public interface Stack<E> {
      * Removes all of the elements from this collection.
      */
     void clear();
+
+    /**
+     * Removes the first occurrence of the specified element from this list,
+     * if it is present (optional operation).
+     * @param e element to be removed from the list
+     * @return {@code true} if this list contained the specified element, or {@code false} otherwise
+     */
+    boolean remove(E e);
 }
