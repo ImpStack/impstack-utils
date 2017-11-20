@@ -27,7 +27,7 @@ dependencies {
     compile "org.impstack:impstack-utils:0.1"
 }
 ```
-Don't forget to add JCenter to your repositories 
+Don't forget to add [JCenter](https://dl.bintray.com/remyvd/impstack) to your repositories 
 ```
 repositories {
     jcenter()
