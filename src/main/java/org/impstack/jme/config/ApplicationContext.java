@@ -41,7 +41,7 @@ public enum ApplicationContext {
         app.setShowSettings(false);
         app.setPauseOnLostFocus(false);
 
-        executorService = new ScheduledThreadPoolExecutor(4);
+        setExecutorService(new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 1));
 
         application.start();
         LOG.info("Starting {}... OK", ApplicationVersion.NAME);
@@ -67,13 +67,15 @@ public enum ApplicationContext {
             stopping = true;
 
             LOG.info("Closing {} application context...", ApplicationVersion.NAME);
-            executorService.shutdown();
-            try {
-                while (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-                    LOG.info("Shutting down thread pool...");
+            if (executorService != null) {
+                executorService.shutdown();
+                try {
+                    while (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                        LOG.info("Shutting down thread pool...");
+                    }
+                } catch (InterruptedException e) {
+                    LOG.error(e.getMessage(), e);
                 }
-            } catch (InterruptedException e) {
-                LOG.error(e.getMessage(), e);
             }
             LOG.info("Closing {} application context... OK", ApplicationVersion.NAME);
         }
@@ -94,6 +96,10 @@ public enum ApplicationContext {
 
     public ScheduledExecutorService getExecutorService() {
         return executorService;
+    }
+
+    public void setExecutorService(ScheduledExecutorService executorService) {
+        this.executorService = executorService;
     }
 
     public SimpleApplication getApplication() {
