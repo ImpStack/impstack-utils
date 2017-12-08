@@ -3,6 +3,7 @@ package org.impstack.jme;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
 import org.impstack.jme.config.ApplicationContext;
+import org.impstack.jme.config.ApplicationSettings;
 
 /**
  * @author remy
@@ -13,6 +14,11 @@ public abstract class JmeLauncher extends SimpleApplication {
     protected JmeLauncher() {
         super((AppState) null);
         ApplicationContext.INSTANCE.start(this);
+    }
+
+    protected JmeLauncher(ApplicationSettings settings) {
+        super((AppState) null);
+        ApplicationContext.INSTANCE.start(this, settings);
     }
 
     protected abstract AppState getFirstAppState();
