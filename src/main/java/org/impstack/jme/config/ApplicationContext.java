@@ -29,6 +29,10 @@ public enum ApplicationContext {
     private boolean stopping = false;
 
     public void start(SimpleApplication application) {
+        start(application, new ApplicationSettings(application.getClass()));
+    }
+
+    public void start(SimpleApplication application, ApplicationSettings settings) {
         LOG.info("Starting {} ...", ApplicationVersion.NAME);
         this.app = application;
 
@@ -36,7 +40,7 @@ public enum ApplicationContext {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
 
-        applicationSettings = new ApplicationSettings(application.getClass());
+        applicationSettings = settings;
         app.setSettings(applicationSettings.load());
         app.setShowSettings(false);
         app.setPauseOnLostFocus(false);
