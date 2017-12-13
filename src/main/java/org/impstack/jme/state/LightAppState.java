@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author remy
  * @since 11/10/17.
  */
-public class LightAppState extends BaseAppState {
+public class LightAppState extends BaseAppState implements DebugAppState {
 
     private static final Logger LOG = LoggerFactory.getLogger(LightAppState.class);
 
@@ -63,14 +63,7 @@ public class LightAppState extends BaseAppState {
     protected void cleanup(Application app) {
     }
 
-    public AmbientLight getAmbientLight() {
-        return ambientLight;
-    }
-
-    public DirectionalLight getDirectionalLight() {
-        return directionalLight;
-    }
-
+    @Override
     public Panel getDebugPanel() {
         Container container = new Container();
         container.addChild(new Label("Lights", new ElementId("window.title.label")));
@@ -128,6 +121,14 @@ public class LightAppState extends BaseAppState {
         dlButton.setTextHAlignment(HAlignment.Center);
 
         return container;
+    }
+
+    public AmbientLight getAmbientLight() {
+        return ambientLight;
+    }
+
+    public DirectionalLight getDirectionalLight() {
+        return directionalLight;
     }
 
 }
