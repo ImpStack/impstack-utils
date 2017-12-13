@@ -28,6 +28,7 @@ public class LightAppState extends BaseAppState implements DebugAppState {
     private DirectionalLight directionalLight;
     private ColorRGBA directionalLightColor = ColorRGBA.White.mult(2);
     private Vector3f directionalLightDirection = new Vector3f(-1, -1, -1).normalizeLocal();
+    private Container debugPanel;
 
     public LightAppState(Node node) {
         this.node = node;
@@ -65,62 +66,63 @@ public class LightAppState extends BaseAppState implements DebugAppState {
 
     @Override
     public Panel getDebugPanel() {
-        Container container = new Container();
-        container.addChild(new Label("Lights", new ElementId("window.title.label")));
+        if (debugPanel == null) {
+            debugPanel = new Container();
+            debugPanel.addChild(new Label("Lights", new ElementId("window.title.label")));
 
-        // ambient light
-        Container alColor = container.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
-        alColor.setInsets(new Insets3f(5, 5, 5, 5));
-        alColor.addChild(new Label("Ambient light: "));
-        TextField ambientLightTextfieldColor = alColor.addChild(new TextField(ColorHelper.toHex(ambientLight.getColor())));
-        ambientLightTextfieldColor.setPreferredSize(ambientLightTextfieldColor.getPreferredSize().clone());
+            // ambient light
+            Container alColor = debugPanel.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
+            alColor.setInsets(new Insets3f(5, 5, 5, 5));
+            alColor.addChild(new Label("Ambient light: "));
+            TextField ambientLightTextfieldColor = alColor.addChild(new TextField(ColorHelper.toHex(ambientLight.getColor())));
+            ambientLightTextfieldColor.setPreferredSize(ambientLightTextfieldColor.getPreferredSize().clone());
 
-        Container alValue = container.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
-        alValue.setInsets(new Insets3f(5, 5, 5, 5));
-        Slider alSlider = alValue.addChild(new Slider(new DefaultRangedValueModel(0, 2, 1), Axis.X));
-        alSlider.setDelta(0.1);
-        Label alSliderLabel = alValue.addChild(new Label(String.format("%2.1f", alSlider.getModel().getValue())));
-        Button alButton = container.addChild(new Button("Set"));
+            Container alValue = debugPanel.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
+            alValue.setInsets(new Insets3f(5, 5, 5, 5));
+            Slider alSlider = alValue.addChild(new Slider(new DefaultRangedValueModel(0, 2, 1), Axis.X));
+            alSlider.setDelta(0.1);
+            Label alSliderLabel = alValue.addChild(new Label(String.format("%2.1f", alSlider.getModel().getValue())));
+            Button alButton = debugPanel.addChild(new Button("Set"));
 
-        alButton.addClickCommands((Command<Button>) source -> {
-            ColorRGBA colorRGBA = ColorHelper.fromHex(ambientLightTextfieldColor.getText());
-            if (colorRGBA != null) {
-                colorRGBA.multLocal((float) alSlider.getModel().getValue());
-                LOG.trace("Setting ambient light color to {}", colorRGBA);
-                ambientLight.setColor(colorRGBA);
-                alSliderLabel.setText(String.format("%2.1f", alSlider.getModel().getValue()));
-            }
-        });
-        alButton.setInsets(new Insets3f(5, 5, 5, 5));
-        alButton.setTextHAlignment(HAlignment.Center);
+            alButton.addClickCommands((Command<Button>) source -> {
+                ColorRGBA colorRGBA = ColorHelper.fromHex(ambientLightTextfieldColor.getText());
+                if (colorRGBA != null) {
+                    colorRGBA.multLocal((float) alSlider.getModel().getValue());
+                    LOG.trace("Setting ambient light color to {}", colorRGBA);
+                    ambientLight.setColor(colorRGBA);
+                    alSliderLabel.setText(String.format("%2.1f", alSlider.getModel().getValue()));
+                }
+            });
+            alButton.setInsets(new Insets3f(5, 5, 5, 5));
+            alButton.setTextHAlignment(HAlignment.Center);
 
-        // directional light
-        Container dl = container.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
-        dl.setInsets(new Insets3f(5, 5, 5, 5));
-        dl.addChild(new Label("Directional light: "));
-        TextField directionalLightTextfieldColor = dl.addChild(new TextField(ColorHelper.toHex(directionalLight.getColor())));
-        directionalLightTextfieldColor.setPreferredSize(directionalLightTextfieldColor.getPreferredSize().clone());
+            // directional light
+            Container dl = debugPanel.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
+            dl.setInsets(new Insets3f(5, 5, 5, 5));
+            dl.addChild(new Label("Directional light: "));
+            TextField directionalLightTextfieldColor = dl.addChild(new TextField(ColorHelper.toHex(directionalLight.getColor())));
+            directionalLightTextfieldColor.setPreferredSize(directionalLightTextfieldColor.getPreferredSize().clone());
 
-        Container dlValue = container.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
-        dlValue.setInsets(new Insets3f(5, 5, 5, 5));
-        Slider dlSlider = dlValue.addChild(new Slider(new DefaultRangedValueModel(0, 2, 1), Axis.X));
-        dlSlider.setDelta(0.1);
-        Label dlSliderLabel = dlValue.addChild(new Label(String.format("%2.1f", dlSlider.getModel().getValue())));
+            Container dlValue = debugPanel.addChild(new Container(new SpringGridLayout(Axis.X, Axis.Y, FillMode.None, FillMode.None)));
+            dlValue.setInsets(new Insets3f(5, 5, 5, 5));
+            Slider dlSlider = dlValue.addChild(new Slider(new DefaultRangedValueModel(0, 2, 1), Axis.X));
+            dlSlider.setDelta(0.1);
+            Label dlSliderLabel = dlValue.addChild(new Label(String.format("%2.1f", dlSlider.getModel().getValue())));
 
-        Button dlButton = container.addChild(new Button("Set"));
-        dlButton.addClickCommands((Command<Button>) source -> {
-            ColorRGBA colorRGBA = ColorHelper.fromHex(directionalLightTextfieldColor.getText());
-            if (colorRGBA != null) {
-                colorRGBA.multLocal((float) dlSlider.getModel().getValue());
-                LOG.trace("Setting directional light color to {}", colorRGBA);
-                directionalLight.setColor(colorRGBA);
-                dlSliderLabel.setText(String.format("%2.1f", dlSlider.getModel().getValue()));
-            }
-        });
-        dlButton.setInsets(new Insets3f(5, 5, 5, 5));
-        dlButton.setTextHAlignment(HAlignment.Center);
-
-        return container;
+            Button dlButton = debugPanel.addChild(new Button("Set"));
+            dlButton.addClickCommands((Command<Button>) source -> {
+                ColorRGBA colorRGBA = ColorHelper.fromHex(directionalLightTextfieldColor.getText());
+                if (colorRGBA != null) {
+                    colorRGBA.multLocal((float) dlSlider.getModel().getValue());
+                    LOG.trace("Setting directional light color to {}", colorRGBA);
+                    directionalLight.setColor(colorRGBA);
+                    dlSliderLabel.setText(String.format("%2.1f", dlSlider.getModel().getValue()));
+                }
+            });
+            dlButton.setInsets(new Insets3f(5, 5, 5, 5));
+            dlButton.setTextHAlignment(HAlignment.Center);
+        }
+        return debugPanel;
     }
 
     public AmbientLight getAmbientLight() {
