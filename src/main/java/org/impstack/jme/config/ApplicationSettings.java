@@ -57,6 +57,8 @@ public final class ApplicationSettings {
         GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         DisplayMode displayMode = graphicsDevice.getDisplayMode();
 
+        LOG.debug("Supported resolutions: {}", ResolutionHelper.INSTANCE.getResolutions());
+
         AppSettings settings = new AppSettings(true);
         settings.setFrequency(displayMode.getRefreshRate());
         settings.setTitle(ApplicationVersion.NAME + " - " + ApplicationVersion.VERSION + " build " + ApplicationVersion.BUILD + " " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.mmm").format(new Date(Long.parseLong(ApplicationVersion.BUILD_TIMESTAMP))));
